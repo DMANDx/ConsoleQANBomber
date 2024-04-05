@@ -10,7 +10,7 @@ namespace ConsoleQANBomber
     {
         static void Main(string[] args)
         {
-            //GetMain();
+            GetMain();
             GetStep();
         }
 
