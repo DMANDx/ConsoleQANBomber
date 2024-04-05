@@ -14,23 +14,22 @@ namespace ConsoleQANBomber
             GetStep();
         }
 
-        private static void GetMain() 
+        private static void GetMain()
         {
             using var httpClient = new HttpClient();
 
             var scenario = Scenario.Create("hello_world_scenario", async context =>
             {
-                var response = await httpClient.GetAsync("https://localhost:7021/OrderDetails");
+                //for error
+                var response = await httpClient.GetAsync("https://localhost:7021");
                 context.Logger.Fatal("my login");
                 return response.IsSuccessStatusCode ? Response.Ok() : Response.Fail();
             })
             .WithoutWarmUp()
             .WithLoadSimulations(
-                //скорость инъекции (10 запросов в секунду)
-                Simulation.Inject(rate: 10,                                  
-                                  interval: TimeSpan.FromSeconds(1),                                  
-        //продолжительность инъекции трафика (30 секунд)
-        during: TimeSpan.FromSeconds(30))
+                Simulation.Inject(rate: 10,
+                                  interval: TimeSpan.FromSeconds(1),
+                                                                during: TimeSpan.FromSeconds(30))
             );
 
             NBomberRunner
@@ -38,7 +37,7 @@ namespace ConsoleQANBomber
                 .Run();
         }
 
-        private static void GetStep() 
+        private static void GetStep()
         {
             var scenario = Scenario.Create("my_step_scenario", async context =>
             {
@@ -67,17 +66,15 @@ namespace ConsoleQANBomber
                     context.Logger.Information("my logout");
                     await Task.Delay(1_000);
                     return Response.Ok();
-                }) ;
+                });
 
                 return Response.Ok();
 
             }).WithLoadSimulations(
-                //скорость инъекции (10 запросов в секунду)
                 Simulation.Inject(rate: 10,
                                   interval: TimeSpan.FromSeconds(1),
-                //продолжительность инъекции трафика (30 секунд)
                 during: TimeSpan.FromSeconds(30))
-            ); ;  NBomberRunner
+            ); ; NBomberRunner
                 .RegisterScenarios(scenario)
                 .Run(); ;
         }
