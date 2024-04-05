@@ -13,7 +13,9 @@ namespace ConsoleQANBomber
             GetMain();
             GetStep();
         }
-
+        /// <summary>
+        /// Its samlpe with error, for tetst answer
+        /// </summary>
         private static void GetMain()
         {
             using var httpClient = new HttpClient();
